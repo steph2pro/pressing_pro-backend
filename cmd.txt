@@ -1,5 +1,0 @@
-create a request: use to give rules or valided pages's conditions-->  php artisan make:request CreatePostRequest
-
-pour gerer le login en api et le token, se rassurer de creer la table personal_acess_token 
-
-      php artisan migrate --path=database/migrations/2025_05_30_070637_create_entreprises_table.php     
