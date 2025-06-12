@@ -33,6 +33,7 @@ class UserRequest extends FormRequest
         ];
     }
 
+    //on verifie si celui qui tente de se connecte se trouve dans la table admin ou user
     public function withValidator($validator)
 {
     $validator->after(function ($validator) {
