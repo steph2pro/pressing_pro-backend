@@ -29,8 +29,8 @@ class UserController
 
           return response()->json([
         'status_code'=> '200',
-        'status_message' => 'Utilisateur enregistrer avec succès',
-        'admin'=> $admin
+        'status_message' => 'Utilisateur (admin) enregistrer avec succès',
+        
       
        ]);
           }
@@ -51,7 +51,7 @@ class UserController
           return response()->json([
         'status_code'=> '200',
         'status_message' => 'Utilisateur enregistrer avec succès',
-        'user'=> $user
+        
       
        ]);
 }
@@ -82,7 +82,6 @@ class UserController
                 return response()->json([
                         "status_code" => "200",
                         "status_message" => "Utilisateur connecté.",
-                        "user"=> $user,
                         "token" => $token,
                     //     "sucursalle" => $sucursalle 
                         ],200); 
@@ -100,7 +99,6 @@ class UserController
             return response()->json([
                 "status_code" => "200",
                 "status_message" => "Admin connecté.",
-                "admin"=> $admin,
                 "token" => $token,
             ], 200);
             
@@ -156,7 +154,7 @@ public function update(UpdateUserRequest $request, $id){
      return response()->json([
         'message'=> 'modification Admin effectuer',
         'statut_code' => '200',
-        'data' => $adminn,
+       
         ]);
 
      } elseif($request->profil == "admin" && $admin == null) {
@@ -182,7 +180,7 @@ public function update(UpdateUserRequest $request, $id){
      return response()->json([
         'statut_code' => '200',
         'message'=> 'modification User effectuer',
-        'data' => $user,
+       
         ]);
     }
       elseif($request->profil == "user" && $admin == null) {

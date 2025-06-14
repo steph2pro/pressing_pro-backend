@@ -11,11 +11,13 @@ class DepotController
 
  public function index(Request $request)
     {
-         // On charge la relation client pour chaque dépôt
-       $depots = Depot::with(['client:client_id,name,phone'])->get();
+        try{
+
+                   // On charge la relation client pour chaque dépôt
+       $depots = Depot::query()->with(['client:client_id,name,phone'])->get();
 
         // On formate la réponse pour inclure nom et phone du client
-    $depots = $depots->map(function($depot) {
+       $depots = $depots->map(function($depot) {
         return [
             'depot_id' => $depot->depot_id,
             'client_id' => $depot->client_id,
@@ -26,10 +28,32 @@ class DepotController
             'updated_at' => $depot->updated_at,
         ];
     });
-        return response()->json([
-            "statut_code"=> "200",
-            "depot"=> $depots
+
+
+       // $query = Depot::query();
+         $perPage = '10';
+         $page = $request->input('page',1); // recupere la page sur laquelle l'utilisateur est actuellement ou qu'il souhaite se rendre.
+      
+         $totale = $depots->count();
+
+         $resultat = $depots->forPage($page, $perPage)->values();
+
+             return response()->json([
+             "statut_code"=> "200",
+             'current_page' => $page,
+             'PerPage' => $perPage,
+            'total_page'=> ceil($totale / $perPage),
+            'items'=> $resultat,
+           
         ]);
+
+        }catch(\Exception $e){
+            return response()->json([
+                "error"=> $e->getMessage()
+                ],402);
+        }
+  
+       
 
     }
 
@@ -42,13 +66,14 @@ class DepotController
             $depot = new Depot();
 
             $depot->client_id  = $request->client_id;
-            $depot->sucursalle_id = $user->sucursalle_id;
+            $depot->sucursalle_id = $request->sucursalle_id;
+            
             $depot->save();
 
           return response()->json([
         'status_code'=> '200',
         'status_message' => 'Depot créer avec succès',
-        'depot'=> $depot
+        
         ]);
 
         }catch(\Exception $e){
